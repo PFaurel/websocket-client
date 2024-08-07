@@ -660,7 +660,10 @@ class WebSocketApp:
             )
             reason = close_frame.data[2:]
             if isinstance(reason, bytes):
-                reason = reason.decode("utf-8")
+                try:
+                    reason = reason.decode("utf-8")
+                except UnicodeError as e:
+                    reason = reason.decode("ISO-8859-1")
             return [close_status_code, reason]
         else:
             # Most likely reached this because len(close_frame_data.data) < 2

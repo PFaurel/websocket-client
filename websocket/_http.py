@@ -350,7 +350,10 @@ def read_headers(sock: socket.socket) -> tuple:
 
     while True:
         line = recv_line(sock)
-        line = line.decode("utf-8").strip()
+        try:
+            line = line.decode("utf-8").strip()
+        except UnicodeError as e:
+            line = line.decode("ISO-8859-1").strip()
         if not line:
             break
         trace(line)
